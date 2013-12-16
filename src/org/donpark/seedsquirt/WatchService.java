@@ -1,5 +1,10 @@
 package org.donpark.seedsquirt;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import com.loopj.android.http.JsonHttpResponseHandler;
+
 import android.app.Service;
 import android.content.Intent;
 import android.os.Environment;
@@ -8,6 +13,13 @@ import android.util.Log;
 
 public class WatchService extends Service implements Constants {
 
+    private final class PostResponse extends JsonHttpResponseHandler {
+        @Override
+        public void onSuccess(JSONObject response) {
+            Log.d(APP_TAG, "Success "+response);
+        }
+    }
+
     public static DirObserver photos;
     public static Database db;
 
@@ -15,8 +27,8 @@ public class WatchService extends Service implements Constants {
     public void onStart(Intent start, int key){
         db = new Database(getApplicationContext());
         db.open();
-        String photoPath = Environment.getExternalStorageDirectory()+"/DCIM/camera";
-        photos = new DirObserver(photoPath, db);
+        String photoPath = Environment.getExternalStorageDirectory()+DirObserver.PATH;
+        photos = new DirObserver(photoPath, db, new PostResponse());
         Log.d(APP_TAG,"Begin watching "+photoPath);
         photos.startWatching();
     }
