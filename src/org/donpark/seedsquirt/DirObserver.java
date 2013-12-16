@@ -7,16 +7,17 @@ import android.widget.Toast;
 
 public class DirObserver extends FileObserver implements Constants {
 
-    private Context _ctx;
+    private Database _db;
     
-    public DirObserver(String path, Context ctx) {
+    public DirObserver(String path, Database db) {
         super(path, CREATE);
-        _ctx = ctx;
+        _db = db;
     }
 
     @Override
     public void onEvent(int event, String path) {
         Log.d(APP_TAG,"Change "+event+" "+path);
+        _db.insertUpload(path);
     }
 
 }
