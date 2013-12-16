@@ -9,11 +9,13 @@ import android.util.Log;
 public class WatchService extends Service implements Constants {
 
     public static DirObserver photos;
+    public static Database db;
 
     @Override
     public void onStart(Intent start, int key){
+        db = new Database(getApplicationContext());
         String photoPath = Environment.getExternalStorageDirectory()+"/DCIM/camera";
-        photos = new DirObserver(photoPath, getBaseContext());
+        photos = new DirObserver(photoPath, getApplicationContext());
         Log.d(APP_TAG,"Begin watching "+photoPath);
         photos.startWatching();
     }
@@ -25,6 +27,6 @@ public class WatchService extends Service implements Constants {
 
     @Override
     public void onDestroy(){
-        
+        db.close();
     }
 }

@@ -10,14 +10,13 @@ public class DirObserver extends FileObserver implements Constants {
     private Context _ctx;
     
     public DirObserver(String path, Context ctx) {
-        super(path);
+        super(path, CREATE);
         _ctx = ctx;
     }
 
     @Override
     public void onEvent(int event, String path) {
-        Log.d(APP_TAG,"Change alert! "+path);
-        Toast.makeText(_ctx, "Image "+path, Toast.LENGTH_SHORT).show();
+        Log.d(APP_TAG,"Change "+event+" "+path);
     }
 
 }
