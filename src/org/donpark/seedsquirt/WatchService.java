@@ -14,6 +14,7 @@ public class WatchService extends Service implements Constants {
     @Override
     public void onStart(Intent start, int key){
         db = new Database(getApplicationContext());
+        db.open();
         String photoPath = Environment.getExternalStorageDirectory()+"/DCIM/camera";
         photos = new DirObserver(photoPath, db);
         Log.d(APP_TAG,"Begin watching "+photoPath);

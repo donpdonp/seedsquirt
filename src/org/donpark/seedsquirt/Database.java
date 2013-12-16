@@ -2,6 +2,7 @@ package org.donpark.seedsquirt;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -39,6 +40,13 @@ public class Database implements Constants {
         cv.put(FILENAME_COLUMN, fileName);
 
         _db.insert(UPLOADS_TABLE, null, cv);
+    }
+    
+    public Cursor unfinishedUploads(){
+        return _db.rawQuery("SELECT * "+
+                 "FROM "+UPLOADS_TABLE+
+                 " WHERE "+URL_COLUMN+" IS NULL ",
+                 null);        
     }
     
     private static class DbHelper extends SQLiteOpenHelper {
