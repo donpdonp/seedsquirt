@@ -8,6 +8,13 @@
     android:id="@+id/filename"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:textSize="18sp" />
+    android:textSize="16sp" />
+
+    <TextView
+    android:id="@+id/status"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textSize="18sp"
+    android:layout_marginLeft="2sp" />
     
 </LinearLayout>

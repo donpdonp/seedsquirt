@@ -33,9 +33,9 @@ public class MainActivity extends Activity implements Constants {
         db = new Database(this);
         db.open();
         SimpleCursorAdapter adapter=new SimpleCursorAdapter(this,
-                R.layout.row, db.unfinishedUploads(),
-                new String[] {Database.FILENAME_COLUMN},
-                new int[] {R.id.filename});
+                R.layout.row, db.uploads(),
+                new String[] {Database.FILENAME_COLUMN, Database.STATUS_COLUMN},
+                new int[] {R.id.filename, R.id.status});
         mainList = (ListView) findViewById(R.id.uploads);
         mainList.setAdapter(adapter);
         

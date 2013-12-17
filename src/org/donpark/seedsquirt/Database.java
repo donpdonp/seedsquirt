@@ -15,7 +15,12 @@ public class Database implements Constants {
     public static final String UPLOADS_TABLE="uploads";
     public static final String FILENAME_COLUMN="filename";
     public static final String URL_COLUMN="url";
+    public static final String STATUS_COLUMN="status";
     public static final String UPLOADED_AT_COLUMN="uploaded_at";
+
+    public static String INPROGRESS_STATUS = "inprogress";
+    public static String SUCCESS_STATUS = "success";
+    public static String ERROR_STATUS = "failed";
 
     private final Context _context;
     private final DbHelper _helper;
@@ -38,17 +43,22 @@ public class Database implements Constants {
         Log.d(APP_TAG, "inserting "+fileName);
         ContentValues cv = new ContentValues();
         cv.put(FILENAME_COLUMN, fileName);
+        cv.put(STATUS_COLUMN, INPROGRESS_STATUS);
 
         _db.insert(UPLOADS_TABLE, null, cv);
     }
     
-    public Cursor unfinishedUploads(){
-        return _db.rawQuery("SELECT * "+
-                 "FROM "+UPLOADS_TABLE+
-                 " WHERE "+URL_COLUMN+" IS NULL ",
-                 null);        
+    public Cursor uploads(){
+        return _db.rawQuery("SELECT * FROM "+UPLOADS_TABLE, null);        
     }
-    
+
+    public Cursor uploads(String status){
+        return _db.rawQuery("SELECT *"+
+                 " FROM "+UPLOADS_TABLE+
+                 " WHERE "+STATUS_COLUMN+" = ?",
+                 new String[] {status});        
+    }
+
     private static class DbHelper extends SQLiteOpenHelper {
 
         public DbHelper(Context context, String dbName, CursorFactory factory, int version) {
@@ -60,6 +70,7 @@ public class Database implements Constants {
             db.execSQL("CREATE TABLE "+UPLOADS_TABLE+" (_id INTEGER PRIMARY KEY AUTOINCREMENT, "+
                     FILENAME_COLUMN+" TEXT, "+
                     URL_COLUMN+" TEXT, "+
+                    STATUS_COLUMN+" TEXT, "+
                     UPLOADED_AT_COLUMN+" DATETIME);");
         }
 
@@ -68,5 +79,11 @@ public class Database implements Constants {
             
         }
         
+    }
+
+    public void setStatus(String status, String filename) {
+        ContentValues cv = new ContentValues();
+        cv.put(STATUS_COLUMN, status);
+        _db.update(UPLOADS_TABLE, cv, FILENAME_COLUMN+" = ?", new String[] {filename});
     }
 }
