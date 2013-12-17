@@ -18,11 +18,13 @@ public class DirObserver extends FileObserver implements Constants {
 
     @Override
     public void onEvent(int event, String path) {
-        Log.d(APP_TAG,"Change "+event+" "+path);
-        _db.insertUpload(path);
-        PostHandler handler = new PostHandler(path, _db);
-        String fullpath = _path+"/"+path;
-        Post.filePost(fullpath, handler);
+        if(path != null) {
+            Log.d(APP_TAG,"Change "+event+" "+path);
+            _db.insertUpload(path);
+            PostHandler handler = new PostHandler(path, _db);
+            String fullpath = _path+"/"+path;
+            Post.filePost(fullpath, handler);
+        }
     }
 
 }

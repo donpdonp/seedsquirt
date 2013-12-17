@@ -14,7 +14,7 @@ import com.loopj.android.http.RequestParams;
 
 public class Post implements Constants {
     private static AsyncHttpClient client = new AsyncHttpClient();
-    private static String URL = "http://cdn.donpark.org/i/upload";
+    public static String URL = "http://cdn.donpark.org/i/upload";
     
     public static RequestHandle filePost(String filename, AsyncHttpResponseHandler handler){
         File myFile = new File(filename);

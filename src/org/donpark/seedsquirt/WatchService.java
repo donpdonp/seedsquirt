@@ -1,10 +1,5 @@
 package org.donpark.seedsquirt;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import com.loopj.android.http.JsonHttpResponseHandler;
-
 import android.app.Service;
 import android.content.Intent;
 import android.os.Environment;
@@ -18,8 +13,11 @@ public class WatchService extends Service implements Constants {
 
     @Override
     public void onStart(Intent start, int key){
+        Log.d(APP_TAG, "WatchService onStart()");
+        
         db = new Database(getApplicationContext());
         db.open();
+
         String photoPath = Environment.getExternalStorageDirectory()+"/"+Environment.DIRECTORY_DCIM+"/camera";
         photos = new DirObserver(photoPath, db);
         Log.d(APP_TAG,"Begin watching "+photoPath);

@@ -82,6 +82,7 @@ public class Database implements Constants {
     }
 
     public void setStatus(String status, String filename) {
+        Log.d(APP_TAG, "setStatus "+status+" for "+filename);
         ContentValues cv = new ContentValues();
         cv.put(STATUS_COLUMN, status);
         _db.update(UPLOADS_TABLE, cv, FILENAME_COLUMN+" = ?", new String[] {filename});

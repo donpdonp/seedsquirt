@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 
 public class MainActivity extends Activity implements Constants {
 
@@ -22,7 +23,7 @@ public class MainActivity extends Activity implements Constants {
     @Override
     protected void onStart(){
         super.onStart();
-        Log.d(APP_TAG, "App starting. Starting service");
+        Log.d(APP_TAG, "MainActivity onStart(). Starting service");
         Intent watch = new Intent(this, WatchService.class);
         startService(watch);
     }
@@ -30,8 +31,13 @@ public class MainActivity extends Activity implements Constants {
     @Override
     protected void onResume(){
         super.onResume();
+        Log.d(APP_TAG, "MainActivity onResume()");
         db = new Database(this);
         db.open();
+        
+        TextView tv = (TextView)findViewById(R.id.greeting);
+        tv.setText("Upload target "+Post.URL);
+        
         SimpleCursorAdapter adapter=new SimpleCursorAdapter(this,
                 R.layout.row, db.uploads(),
                 new String[] {Database.FILENAME_COLUMN, Database.STATUS_COLUMN},
