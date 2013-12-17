@@ -7,12 +7,13 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 
 public class DirObserver extends FileObserver implements Constants {
 
-    public static String PATH="/DCIM/camera";
     private Database _db;
     private JsonHttpResponseHandler _handler;
+    private String _path;
     
     public DirObserver(String path, Database db, JsonHttpResponseHandler handler) {
         super(path, CREATE);
+        _path = path;
         _db = db;
         _handler = handler;
     }
@@ -21,7 +22,7 @@ public class DirObserver extends FileObserver implements Constants {
     public void onEvent(int event, String path) {
         Log.d(APP_TAG,"Change "+event+" "+path);
         _db.insertUpload(path);
-        String fullpath = PATH+"/"+path;
+        String fullpath = _path+"/"+path;
         Post.filePost(fullpath, _handler);
     }
 
